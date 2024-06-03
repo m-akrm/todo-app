@@ -10,4 +10,14 @@
         android:name="com.example.todo_app.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/calenderFragment"
+        android:name="com.example.todo_app.CalenderFragment"
+        android:label="fragment_calender"
+        tools:layout="@layout/fragment_calender" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.todo_app.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

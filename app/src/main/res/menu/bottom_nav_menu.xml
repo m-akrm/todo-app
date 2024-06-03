@@ -3,18 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/mainFragment"
         android:enabled="true"
         android:icon="@drawable/home_icon"
         android:title="home" />
     <item
-        android:id="@+id/calender"
+        android:id="@+id/calenderFragment"
         android:enabled="true"
         android:icon="@drawable/cal_icon"
         android:title="calender" />
     <item
-        android:id="@+id/person"
+        android:id="@+id/settingFragment"
         android:enabled="true"
         android:icon="@drawable/person_icon"
-        android:title="person" />
+        android:title="setting" />
+    <item android:title=""
+        android:enabled="false"
+        />
+
+
 </menu>
