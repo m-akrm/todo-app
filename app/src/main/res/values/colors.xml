@@ -5,9 +5,13 @@
     <color name="bottom_bar_color">#EEE9FF</color>
     <color name="bottom_bar_icon_color">#B5A0F3</color>
     <color name="fab_color">#5F33E1</color>
-    <color name="progress_card_color">#E7F3FF</color>
-    <color name="progress_bar_color">#0087FF</color>
-    <color name="cardview_icon_backgorund">#FFE4F2</color>
-    <color name="cardview_icon_color">#F378B7</color>
+    <color name="odd_progress_card_color">#FFE9E1</color>
+    <color name="odd_progress_bar_color">#FF7D53</color>
+    <color name="odd_cardview_icon_backgorund">#EDE4FF</color>
+    <color name="odd_cardview_icon_color">#9260F4</color>
+    <color name="even_progress_card_color">#E7F3FF</color>
+    <color name="even_progress_bar_color">#0087FF</color>
+    <color name="even_cardview_icon_backgorund">#FFE4F2</color>
+    <color name="even_cardview_icon_color">#F378B7</color>
 
 </resources>

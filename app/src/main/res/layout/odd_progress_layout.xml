@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
+    <data>
+        <variable
+            name="task"
+            type="com.example.todo_app.Task" />
 
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="24dp"
         app:cardCornerRadius="24dp"
-        android:backgroundTint="@color/progress_card_color"
+        android:backgroundTint="@color/odd_progress_card_color"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,19 +36,21 @@
                 app:layout_constraintBottom_toTopOf="@+id/textView10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:text="@{task.projectName}"
                 tools:text="Office Project" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
-
+                android:textStyle="bold"
 
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/linearProgressIndicator2"
                 app:layout_constraintStart_toStartOf="@+id/textView9"
                 app:layout_constraintTop_toBottomOf="@+id/textView9"
+                android:text="@{task.taskName}"
                 tools:text="Grocery shopping app design" />
 
             <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -52,8 +60,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
-                android:progress="60"
-                app:indicatorColor="@color/progress_bar_color"
+                android:progress="@{task.progressPercentage}"
+                tools:progress="60"
+                app:indicatorColor="@color/odd_progress_bar_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
 
@@ -68,18 +77,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 app:cardCornerRadius="4dp"
-                android:backgroundTint="@color/cardview_icon_backgorund"
+                android:backgroundTint="@color/odd_cardview_icon_backgorund"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView9" >
+                app:layout_constraintTop_toTopOf="@+id/textView9">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/iconImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/add_icon"
-                    app:tint="@color/cardview_icon_color" />
+                    tools:srcCompat="@drawable/office_icon"
+
+                    app:tint="@color/odd_cardview_icon_color" />
             </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
