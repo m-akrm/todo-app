@@ -8,4 +8,22 @@
         <item name="colorOnSecondaryContainer">@color/bottom_navigator_icon_tint</item>
         
     </style>
+
+    <style name="headerStyles">
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="circularTextview">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:background">@drawable/circular</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/fab_color</item>
+    </style>
 </resources>
