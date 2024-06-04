@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo_app.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -19,13 +21,9 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_main,container,false)
 
-        val tasks = listOf(
-            Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50),
-            Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100),
-            Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0)
-        )
-        val adapter = TaskListAdapter()
-        adapter.submitList(tasks)
+        sharedViewModel.init()
+        val adapter = TaskListAdapter(sharedViewModel)
+        adapter.submitList(sharedViewModel.tasks.value)
         binding.progressRecyclerview.adapter = adapter
 
         return binding.root

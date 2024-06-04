@@ -9,7 +9,7 @@ import com.example.todo_app.databinding.EvenProgressLayoutBinding
 import com.example.todo_app.databinding.OddProgressLayoutBinding
 
 
-class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiffCallback()) {
+class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType==0) {
@@ -45,10 +45,13 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiffCallb
 
         fun bind(task: Task) {
             binding.task=task
-            if (task.icon == null) {
+            var icon=viewModel.projects.value?.find {
+                it.projectName==task.projectName
+            }?.icon
+            if (icon == null) {
                 binding.iconImageView.setImageResource(R.drawable.office_icon)
             } else {
-                binding.iconImageView.setImageDrawable(task.icon)
+                binding.iconImageView.setImageDrawable(icon)
             }
         }
     }
@@ -57,10 +60,13 @@ class TaskListAdapter : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiffCallb
 
         fun bind(task: Task) {
             binding.task=task
-            if (task.icon == null) {
+            var icon=viewModel.projects.value?.find {
+                it.projectName==task.projectName
+            }?.icon
+            if (icon == null) {
                 binding.iconImageView.setImageResource(R.drawable.office_icon)
             } else {
-                binding.iconImageView.setImageDrawable(task.icon)
+                binding.iconImageView.setImageDrawable(icon)
             }
         }
     }
