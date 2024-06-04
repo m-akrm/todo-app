@@ -22,9 +22,19 @@ class MainFragment : Fragment() {
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_main,container,false)
 
         sharedViewModel.init()
+        // adjusting recyclerview adapters
         val adapter = TaskListAdapter(sharedViewModel)
+        val projectListAdapter=ProjectListAdapter()
+
         adapter.submitList(sharedViewModel.tasks.value)
+        projectListAdapter.submitList(sharedViewModel.projects.value)
+
         binding.progressRecyclerview.adapter = adapter
+        binding.groupsRecyclerview.adapter=projectListAdapter
+
+        //setting counters
+        binding.tasksCounter.text=sharedViewModel.tasks.value?.size.toString()
+        binding.projectsCounter.text=sharedViewModel.projects.value?.size.toString()
 
         return binding.root
     }

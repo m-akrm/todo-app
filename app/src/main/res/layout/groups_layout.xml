@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="project"
+            type="com.example.todo_app.Project" />
 
     </data>
 
@@ -43,7 +45,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/taskcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -61,11 +63,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
                 tools:text="office project"
+                android:text="@{project.projectName}"
 
 
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView11"
+                app:layout_constraintBottom_toTopOf="@+id/taskcount"
                 app:layout_constraintStart_toEndOf="@+id/cardView2"
                 app:layout_constraintTop_toTopOf="@+id/cardView2" />
 
@@ -73,13 +76,13 @@
                 android:id="@+id/circularProgressIndicator"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-
+                android:progress="@{project.progressPercentage}"
                 android:layout_marginEnd="32dp"
                 android:indeterminate="false"
-                android:progress="85"
+                tools:progress="85"
                 app:indicatorColor="@color/even_cardview_icon_color"
                 app:indicatorDirectionCircular="counterclockwise"
-                app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                app:layout_constraintBottom_toBottomOf="@+id/taskcount"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
 
@@ -87,14 +90,15 @@
                 app:trackColor="@color/even_cardview_icon_backgorund" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/progressTextview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/circularProgressIndicator"
                 app:layout_constraintEnd_toEndOf="@+id/circularProgressIndicator"
                 app:layout_constraintStart_toStartOf="@+id/circularProgressIndicator"
                 app:layout_constraintTop_toTopOf="@+id/circularProgressIndicator"
-                tools:text="85%" />
+
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
