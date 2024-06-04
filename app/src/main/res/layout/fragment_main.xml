@@ -17,6 +17,7 @@
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         tools:src="@drawable/design" />
 
     <TextView
@@ -25,6 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+
         android:text="Hello!"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/profile_image"
@@ -35,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="your name"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
         app:layout_constraintStart_toStartOf="@+id/textView"
         style="@style/headerStyles" />
@@ -127,6 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="In Progress"
+        android:textColor="@color/black"
 
         style="@style/headerStyles"
 
@@ -144,7 +149,7 @@
         style="@style/circularTextview" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/progress_recyclerview"
         tools:layout_height="100dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -161,9 +166,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="@color/black"
+
         android:text="Task Groups"
         app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_recyclerview" />
 
     <TextView
         android:id="@+id/textView8"
