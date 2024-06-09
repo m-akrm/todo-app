@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.databinding.compiler)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.kotlinx.coroutines.android)
-
+    implementation libs.single.row.calednar
     //circular image view
     implementation libs.circleimageview
 

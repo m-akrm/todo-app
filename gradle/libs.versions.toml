@@ -14,6 +14,7 @@ material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.7.7"
+singleRowCalednar = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +32,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+single-row-calednar = { module = "com.michalsvec:single-row-calednar", version.ref = "singleRowCalednar" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
