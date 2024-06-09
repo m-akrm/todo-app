@@ -54,7 +54,7 @@
             app:fabAnchorMode="cradle"
 
             app:fabAnimationMode="slide"
-            app:fabCradleVerticalOffset="25dp">
+            app:fabCradleVerticalOffset="16dp">
 
 
 

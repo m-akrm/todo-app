@@ -30,30 +30,40 @@ class CalenderFragment : Fragment() {
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_calender, container, false)
         binding.lifecycleOwner=viewLifecycleOwner
 
+        init_calenderview()
+
+
+        return binding.root
+    }
+
+    private fun init_calenderview() {
         // set current date to calendar and current month to currentMonth variable
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
 
 
-        // calendar view manager is responsible for our displaying logic
+
         val myCalendarViewManager = object :
             CalendarViewManager {
+                // set calendar item layout
             override fun bindDataToCalendarView(
                 holder: SingleRowCalendarAdapter.CalendarViewHolder,
                 date: Date,
                 position: Int,
                 isSelected: Boolean
             ) {
-                val daytextview=holder.itemView.findViewById<TextView>(R.id.tv_day_calendar_item)
-                val monthtextview=holder.itemView.findViewById<TextView>(R.id.tv_month_calendar_item)
-                val datetextview=holder.itemView.findViewById<TextView>(R.id.tv_date_calendar_item)
+                val daytextview = holder.itemView.findViewById<TextView>(R.id.tv_day_calendar_item)
+                val monthtextview =
+                    holder.itemView.findViewById<TextView>(R.id.tv_month_calendar_item)
+                val datetextview =
+                    holder.itemView.findViewById<TextView>(R.id.tv_date_calendar_item)
 
-                datetextview.text=DateUtils.getDayNumber(date)
-                monthtextview.text=DateUtils.getMonth3LettersName(date)
-                daytextview.text=DateUtils.getDay3LettersName(date)
+                datetextview.text = DateUtils.getDayNumber(date)
+                monthtextview.text = DateUtils.getMonth3LettersName(date)
+                daytextview.text = DateUtils.getDay3LettersName(date)
 
             }
-
+            // set calendar item layout
             override fun setCalendarViewResourceId(
                 position: Int,
                 date: Date,
@@ -72,8 +82,12 @@ class CalenderFragment : Fragment() {
             CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
                 // TODO: change recyclerview list with new date
-                if(isSelected){
-                    Toast.makeText(this@CalenderFragment.requireContext(), "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} ", Toast.LENGTH_SHORT).show()
+                if (isSelected) {
+                    Toast.makeText(
+                        this@CalenderFragment.requireContext(),
+                        "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} ",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
                 super.whenSelectionChanged(isSelected, position, date)
@@ -90,16 +104,13 @@ class CalenderFragment : Fragment() {
             calendarViewManager = myCalendarViewManager
             calendarChangesObserver = myCalendarChangesObserver
             calendarSelectionManager = mySelectionManager
-            includeCurrentDate=true
+            includeCurrentDate = true
             futureDaysCount = 7
-            initialPositionIndex=5
-            pastDaysCount=7
+            initialPositionIndex = 5
+            pastDaysCount = 7
             init()
         }
         binding.singleRowCal.select(7)
-
-
-        return binding.root
     }
 
 }

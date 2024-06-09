@@ -82,7 +82,11 @@
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="24dp"
+
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="0dp"
                     android:backgroundTint="@color/white"
                     android:text="View Task"
 
@@ -138,13 +142,13 @@
 
             style="@style/headerStyles"
 
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <TextView
             android:id="@+id/tasks_counter"
-            android:text="6"
+            tools:text="6"
             app:layout_constraintBottom_toBottomOf="@+id/textView5"
             app:layout_constraintDimensionRatio="h,1:1"
             app:layout_constraintStart_toEndOf="@+id/textView5"
@@ -153,23 +157,23 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/progress_recyclerview"
-            tools:layout_height="100dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            tools:layout_height="100dp" />
 
         <TextView
             android:id="@+id/textView7"
             style="@style/headerStyles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:textColor="@color/black"
 
             android:text="Task Groups"
@@ -181,7 +185,7 @@
             style="@style/circularTextview"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text="4"
+            tools:text="4"
             app:layout_constraintBottom_toBottomOf="@+id/textView7"
 
             app:layout_constraintDimensionRatio="h,1:1"

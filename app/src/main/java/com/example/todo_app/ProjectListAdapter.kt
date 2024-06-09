@@ -35,7 +35,10 @@ class ProjectListAdapter : ListAdapter<Project, ProjectListAdapter.ProjectViewHo
             }
 
             binding.project=project
-            binding.taskcount.text=project.taskscount.toString()
+            binding.taskcount.text= buildString {
+                append(project.taskscount.toString())
+                append("Tasks")
+            }
             binding.progressTextview.text=project.progressPercentage.toString()
         }
     }
