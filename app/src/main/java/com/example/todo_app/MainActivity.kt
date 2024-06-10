@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
     val sharedViewModel: SharedViewModel by viewModels()
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottom_nav)
             .setupWithNavController(navController)
 
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            navController.navigate(R.id.addProjectFragment)
+        }
 
     }
 }
