@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.todo_app.adapters.CalenderListAdapter
 import com.example.todo_app.databinding.FragmentCalenderBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -30,7 +32,7 @@ class CalenderFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_calender, container, false)
         binding.lifecycleOwner=viewLifecycleOwner
@@ -41,6 +43,7 @@ class CalenderFragment : Fragment() {
         val calenderListAdapter= CalenderListAdapter()
         calenderListAdapter.submitList(sharedViewModel.tasks.value)
         binding.recyclerview.adapter=calenderListAdapter
+//        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=View.GONE
 
 
         return binding.root

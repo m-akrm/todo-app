@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import com.example.todo_app.adapters.ProjectListAdapter
 import com.example.todo_app.adapters.TaskListAdapter
 import com.example.todo_app.databinding.FragmentMainBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainFragment : Fragment() {
 
@@ -18,7 +20,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_main,container,false)
 
@@ -31,6 +33,7 @@ class MainFragment : Fragment() {
 
         binding.progressRecyclerview.adapter = adapter
         binding.groupsRecyclerview.adapter=projectListAdapter
+        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=View.VISIBLE
 
         //setting counters
         binding.tasksCounter.text=sharedViewModel.tasks.value?.size.toString()
