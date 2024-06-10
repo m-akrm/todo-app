@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.todo_app.adapters.ProjectListAdapter
+import com.example.todo_app.adapters.TaskListAdapter
 import com.example.todo_app.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
@@ -21,10 +22,9 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_main,container,false)
 
-        sharedViewModel.init()
         // adjusting recyclerview adapters
         val adapter = TaskListAdapter(sharedViewModel)
-        val projectListAdapter=ProjectListAdapter()
+        val projectListAdapter= ProjectListAdapter()
 
         adapter.submitList(sharedViewModel.tasks.value)
         projectListAdapter.submitList(sharedViewModel.projects.value)

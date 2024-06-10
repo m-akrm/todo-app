@@ -1,6 +1,4 @@
-package com.example.todo_app
-
-import android.graphics.drawable.Drawable
+package com.example.todo_app.dataclasses
 
 data class Task(val taskName: String,
                 val projectName: String,
@@ -8,4 +6,5 @@ data class Task(val taskName: String,
                 val endDate: String,
                 var status: String,
                 var progressPercentage: Int,
+                var dueTime:String,
                 val description:String?=null)

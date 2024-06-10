@@ -1,15 +1,20 @@
-package com.example.todo_app
+package com.example.todo_app.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo_app.R
+import com.example.todo_app.SharedViewModel
+import com.example.todo_app.dataclasses.Task
 import com.example.todo_app.databinding.EvenProgressLayoutBinding
 import com.example.todo_app.databinding.OddProgressLayoutBinding
 
 
-class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, RecyclerView.ViewHolder>(TaskDiffCallback()) {
+class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, RecyclerView.ViewHolder>(
+    TaskDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType==0) {

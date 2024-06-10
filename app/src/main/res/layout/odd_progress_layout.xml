@@ -6,7 +6,7 @@
     <data>
         <variable
             name="task"
-            type="com.example.todo_app.Task" />
+            type="com.example.todo_app.dataclasses.Task" />
 
     </data>
 

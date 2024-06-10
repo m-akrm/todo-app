@@ -1,16 +1,17 @@
-package com.example.todo_app
+package com.example.todo_app.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo_app.dataclasses.Project
+import com.example.todo_app.R
 import com.example.todo_app.databinding.GroupsLayoutBinding
-import kotlin.io.path.name
 
-class ProjectListAdapter : ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(ProjectDiffCallback()) {
+class ProjectListAdapter : ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
+    ProjectDiffCallback()
+) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

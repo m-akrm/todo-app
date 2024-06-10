@@ -6,7 +6,7 @@
     <data>
         <variable
             name="project"
-            type="com.example.todo_app.Project" />
+            type="com.example.todo_app.dataclasses.Project" />
 
     </data>
 

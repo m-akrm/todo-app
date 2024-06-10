@@ -13,5 +13,6 @@
     <color name="even_progress_bar_color">#0087FF</color>
     <color name="even_cardview_icon_backgorund">#FFE4F2</color>
     <color name="even_cardview_icon_color">#F378B7</color>
+    <color name="calender_icon_color">#AA93FD</color>
 
 </resources>

@@ -1,15 +1,16 @@
 package com.example.todo_app
 
-import androidx.fragment.app.add
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.todo_app.dataclasses.Project
+import com.example.todo_app.dataclasses.Task
 
 class SharedViewModel:ViewModel() {
 
     val tasks = MutableLiveData(listOf(
-        Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50),
-        Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100),
-        Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0)
+        Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50,"10:00 am"),
+        Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100,"10:00 am"),
+        Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0,"10:00 am")
     ))
     val projects=MutableLiveData<List<Project>>()
     private  var tasksByProject = tasks.value?.groupBy { it.projectName }?: mapOf()

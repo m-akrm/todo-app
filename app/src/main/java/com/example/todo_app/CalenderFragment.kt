@@ -1,5 +1,6 @@
 package com.example.todo_app
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import com.example.todo_app.adapters.CalenderListAdapter
 import com.example.todo_app.databinding.FragmentCalenderBinding
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
@@ -22,6 +25,8 @@ class CalenderFragment : Fragment() {
     private lateinit var binding:FragmentCalenderBinding
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
+    private var active=0
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,9 +36,62 @@ class CalenderFragment : Fragment() {
         binding.lifecycleOwner=viewLifecycleOwner
 
         init_calenderview()
+        buttonsClickListeners()
+
+        val calenderListAdapter= CalenderListAdapter()
+        calenderListAdapter.submitList(sharedViewModel.tasks.value)
+        binding.recyclerview.adapter=calenderListAdapter
 
 
         return binding.root
+    }
+
+    private fun buttonsClickListeners() {
+        val buttons = listOf(binding.all, binding.todo, binding.progress, binding.completed)
+        binding.all.setOnClickListener {
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
+            }
+            active = 0
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.fab_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
+            }
+        }
+        binding.todo.setOnClickListener {
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
+            }
+            active = 1
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.fab_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
+            }
+        }
+        binding.completed.setOnClickListener {
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
+            }
+            active = 3
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.fab_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
+            }
+        }
+        binding.progress.setOnClickListener {
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
+            }
+            active = 2
+            buttons[active].apply {
+                setBackgroundColor(resources.getColor(R.color.fab_color))
+                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
+            }
+        }
     }
 
     private fun init_calenderview() {
