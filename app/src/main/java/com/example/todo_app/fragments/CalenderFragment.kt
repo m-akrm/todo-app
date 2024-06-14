@@ -1,8 +1,7 @@
-package com.example.todo_app
+package com.example.todo_app.fragments
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.todo_app.R
+import com.example.todo_app.SharedViewModel
 import com.example.todo_app.adapters.CalenderListAdapter
 import com.example.todo_app.databinding.FragmentCalenderBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -24,7 +25,7 @@ import java.util.Date
 
 class CalenderFragment : Fragment() {
 
-    private lateinit var binding:FragmentCalenderBinding
+    private lateinit var binding: FragmentCalenderBinding
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     private var active=0
@@ -34,7 +35,8 @@ class CalenderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_calender, container, false)
+        binding=
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_calender, container, false)
         binding.lifecycleOwner=viewLifecycleOwner
 
         init_calenderview()
@@ -43,7 +45,8 @@ class CalenderFragment : Fragment() {
         val calenderListAdapter= CalenderListAdapter()
         calenderListAdapter.submitList(sharedViewModel.tasks.value)
         binding.recyclerview.adapter=calenderListAdapter
-        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=View.VISIBLE
+        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=
+            View.VISIBLE
 
 
         return binding.root
@@ -108,10 +111,10 @@ class CalenderFragment : Fragment() {
             CalendarViewManager {
                 // set calendar item layout
             override fun bindDataToCalendarView(
-                holder: SingleRowCalendarAdapter.CalendarViewHolder,
-                date: Date,
-                position: Int,
-                isSelected: Boolean
+                    holder: SingleRowCalendarAdapter.CalendarViewHolder,
+                    date: Date,
+                    position: Int,
+                    isSelected: Boolean
             ) {
                 val daytextview = holder.itemView.findViewById<TextView>(R.id.tv_day_calendar_item)
                 val monthtextview =

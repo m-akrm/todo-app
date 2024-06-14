@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.todo_app.MainFragment"
+        android:name="com.example.todo_app.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/calenderFragment"
-        android:name="com.example.todo_app.CalenderFragment"
+        android:name="com.example.todo_app.fragments.CalenderFragment"
         android:label="fragment_calender"
         tools:layout="@layout/fragment_calender" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.todo_app.SettingFragment"
+        android:name="com.example.todo_app.fragments.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/addProjectFragment"
-        android:name="com.example.todo_app.AddTaskFragment"
+        android:name="com.example.todo_app.fragments.AddTaskFragment"
         android:label="fragment_add_project"
         tools:layout="@layout/fragment_add_task" />
 </navigation>
