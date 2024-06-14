@@ -148,35 +148,36 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/priority"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:id="@+id/duetime"
+            style="?attr/textInputOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:hint="priority"
+            android:hint="duetime"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusTopStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/end_date">
+            app:layout_constraintTop_toBottomOf="@id/end_date"
+            app:startIconDrawable="@drawable/clock"
+            app:startIconTint="@color/fab_color"
+        >
 
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="datetime" />
+    </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/add_task_button"
+            android:id="@+id/add_project_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:backgroundTint="@color/fab_color"
-            android:text="Add Task"
+            android:text="Add Project"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

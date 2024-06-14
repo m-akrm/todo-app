@@ -8,9 +8,9 @@ import com.example.todo_app.dataclasses.Task
 class SharedViewModel:ViewModel() {
 
     val tasks = MutableLiveData(listOf(
-        Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50,"10:00 am"),
-        Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100,"10:00 am"),
-        Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0,"10:00 am")
+        Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50,"10:00"),
+        Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100,"10:00"),
+        Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0,"10:00")
     ))
     val projects=MutableLiveData<List<Project>>()
     private  var tasksByProject = tasks.value?.groupBy { it.projectName }?: mapOf()
@@ -32,7 +32,7 @@ class SharedViewModel:ViewModel() {
 
     fun addTask(task: Task) {
         // Add the task to the tasks list
-        var list: MutableList<Task> =tasks.value as MutableList<Task>
+        var list: MutableList<Task> =tasks.value?.toMutableList()?: mutableListOf()
         list.add(task)
         tasks.value=list
 
@@ -44,6 +44,12 @@ class SharedViewModel:ViewModel() {
             it.progressPercentage/=(it.taskscount)
 
         }
+    }
+    fun addProject(project: Project) {
+        // Add the project to the projects list
+        var list: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
+        list.add(project)
+        projects.value=list
     }
     fun getprojectsname(): List<String> {
         val temp_projects = mutableListOf<String>()
