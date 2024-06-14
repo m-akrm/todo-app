@@ -52,7 +52,7 @@
             android:layout_margin="0dp"
             android:backgroundTint="@color/bottom_bar_color"
             android:paddingStart="0dp"
-            app:fabAlignmentMode="end"
+            app:fabAlignmentMode="center"
             app:fabAnchorMode="cradle"
             app:fabAnimationMode="slide"
             app:fabCradleVerticalOffset="16dp">

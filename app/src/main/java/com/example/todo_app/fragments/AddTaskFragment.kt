@@ -25,10 +25,8 @@ class AddTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=
-            View.GONE
-        binding=
-            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_add_task, container, false)
+        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility= View.GONE
+        binding= DataBindingUtil.inflate(layoutInflater, R.layout.fragment_add_task, container, false)
 
         //backbutton navigation
         binding.appbar.setNavigationOnClickListener {
@@ -36,6 +34,10 @@ class AddTaskFragment : Fragment() {
         }
         //autocomplete List
         (binding.menu.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(sharedViewModel.getprojectsname().toTypedArray() )
+
+        //priority list
+        val priority= arrayOf("Low","Medium","High")
+        (binding.priority.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(priority)
 
         //handling editText listeners and date Pickers
         editTextListeners()

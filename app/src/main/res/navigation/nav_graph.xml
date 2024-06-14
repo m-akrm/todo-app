@@ -21,8 +21,13 @@
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <fragment
-        android:id="@+id/addProjectFragment"
+        android:id="@+id/addTaskFragment"
         android:name="com.example.todo_app.fragments.AddTaskFragment"
         android:label="fragment_add_project"
         tools:layout="@layout/fragment_add_task" />
+    <fragment
+        android:id="@+id/addProjectFragment"
+        android:name="com.example.todo_app.fragments.AddProjectFragment"
+        tools:layout="@layout/fragment_add_project"
+        android:label="AddProjectFragment" />
 </navigation>

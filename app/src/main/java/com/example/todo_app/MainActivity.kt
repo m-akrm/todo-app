@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             .setupWithNavController(navController)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
-            navController.navigate(R.id.addProjectFragment)
+            navController.navigate(R.id.addTaskFragment)
         }
 
     }
