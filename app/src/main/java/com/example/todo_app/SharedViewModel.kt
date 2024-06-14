@@ -44,8 +44,15 @@ class SharedViewModel:ViewModel() {
             it.progressPercentage/=(it.taskscount)
 
         }
-
-
+    }
+    fun getprojectsname(): List<String> {
+        val temp_projects = mutableListOf<String>()
+        projects.value?.let {
+            for (project in it) {
+                temp_projects.add(project.projectName)
+            }
+        }
+        return temp_projects.toList()
     }
 
 

@@ -43,7 +43,7 @@ class CalenderFragment : Fragment() {
         val calenderListAdapter= CalenderListAdapter()
         calenderListAdapter.submitList(sharedViewModel.tasks.value)
         binding.recyclerview.adapter=calenderListAdapter
-//        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=View.GONE
+        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=View.VISIBLE
 
 
         return binding.root
