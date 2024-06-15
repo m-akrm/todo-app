@@ -73,6 +73,7 @@ class AddTaskFragment : Fragment() {
                     Toast.makeText(this.requireContext(), "some information is missing", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
                 sharedViewModel.editTask(task,Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))
 
                 requireActivity().onBackPressedDispatcher.onBackPressed()
