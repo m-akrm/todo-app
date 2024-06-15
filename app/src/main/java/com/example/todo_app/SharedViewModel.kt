@@ -67,19 +67,48 @@ class SharedViewModel:ViewModel() {
     }
 
     fun deleteProject(project: Project) {
+        //deleting tasks associated with the project
+        for (task in tasksByProject[project.projectName].orEmpty()) deleteTask(task)
+
         //deleting project itself
         val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
         templist.remove(project)
         projects.value=templist
 
-        //deleting tasks associated with the project
-        for (task in tasksByProject[project.projectName].orEmpty()) deleteTask(task)
+
 
     }
     fun deleteTask(task: Task) {
+        //deleting task from project's tasks list
+        val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
+        templist.find { it.projectName==task.projectName }?.let {
+            it.progressPercentage*=it.taskscount
+            it.progressPercentage-=task.progressPercentage
+            it.taskscount--
+            it.progressPercentage=if(it.taskscount==0) 0 else it.progressPercentage/it.taskscount
+        }
+        projects.value=templist
+
+
+        //deleting task itself
         val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
         temp_tasks.remove(task)
         tasks.value = temp_tasks
+    }
+
+    fun editTask(oldtask: Task, task: Task) {
+        val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
+        temp_tasks.find{
+            it.taskName==oldtask.taskName
+        }?.let {
+            it.taskName=task.taskName
+            it.projectName=task.projectName
+            it.startDate=task.startDate
+            it.endDate=task.endDate
+            it.status=task.status
+        }
+        tasks.value = temp_tasks
+
     }
 
 }

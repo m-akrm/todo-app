@@ -10,9 +10,10 @@ import com.example.todo_app.SharedViewModel
 import com.example.todo_app.dataclasses.Task
 import com.example.todo_app.databinding.EvenProgressLayoutBinding
 import com.example.todo_app.databinding.OddProgressLayoutBinding
+import com.example.todo_app.dataclasses.Project
 
 
-class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, RecyclerView.ViewHolder>(
+class TaskListAdapter(private val oneditClicked: (Task) -> Unit, private val ondeleteClicked: (Task) -> Unit) : ListAdapter<Task, RecyclerView.ViewHolder>(
     TaskDiffCallback()
 ) {
 
@@ -50,6 +51,12 @@ class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, Recycl
 
         fun bind(task: Task) {
             binding.task=task
+            binding.editCardview.setOnClickListener {
+                oneditClicked(task)
+            }
+            binding.deleteCardview.setOnClickListener {
+                ondeleteClicked(task)
+            }
         }
     }
 
@@ -57,7 +64,12 @@ class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, Recycl
 
         fun bind(task: Task) {
             binding.task=task
-
+            binding.editCardview.setOnClickListener {
+                oneditClicked(task)
+            }
+            binding.deleteCardview.setOnClickListener {
+                ondeleteClicked(task)
+            }
         }
     }
 }

@@ -11,11 +11,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.todo_app.R
 import com.example.todo_app.SharedViewModel
 import com.example.todo_app.adapters.ProjectListAdapter
 import com.example.todo_app.adapters.TaskListAdapter
 import com.example.todo_app.databinding.FragmentMainBinding
+import com.example.todo_app.dataclasses.Project
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -36,7 +38,15 @@ class MainFragment : Fragment() {
         }
 
         // adjusting recyclerview adapters
-        val adapter = TaskListAdapter(sharedViewModel)
+        val adapter = TaskListAdapter(
+            ondeleteClicked = {
+                sharedViewModel.deleteTask(it)
+                Toast.makeText(this.requireContext(), "delete", Toast.LENGTH_SHORT).show()
+            },
+            oneditClicked = {
+                this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddTaskFragment().setTask(it))
+            }
+        )
 
         val projectListAdapter= ProjectListAdapter(
             ondeleteClicked = {
@@ -44,24 +54,7 @@ class MainFragment : Fragment() {
                 Toast.makeText(this.requireContext(), "delete", Toast.LENGTH_SHORT).show() 
             },
             oneditClicked = {
-
-                val editText= EditText(this.requireContext()).apply {
-                    setText(it.projectName)
-                }
-                MaterialAlertDialogBuilder(this.requireContext())
-                    .setTitle("Edit Project Name")
-
-                    .setIcon(R.drawable.edit_icon)
-                    .setView(editText)
-                    .setNegativeButton("dismiss") { dialog, which ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton("save") { dialog, which ->
-                        val enteredText = editText.text.toString() // Get text here
-                        sharedViewModel.editProject(it, enteredText)
-                        Toast.makeText(this.requireActivity(), "project edited", Toast.LENGTH_SHORT).show()
-                    }
-                    .show()
+                editProject(it)
             }
         )
         sharedViewModel.projects.observe(viewLifecycleOwner){
@@ -84,6 +77,26 @@ class MainFragment : Fragment() {
         binding.projectsCounter.text=sharedViewModel.projects.value?.size.toString()
 
         return binding.root
+    }
+
+    private fun editProject(it: Project) {
+        val editText = EditText(this.requireContext()).apply {
+            setText(it.projectName)
+        }
+        MaterialAlertDialogBuilder(this.requireContext())
+            .setTitle("Edit Project Name")
+
+            .setIcon(R.drawable.edit_icon)
+            .setView(editText)
+            .setNegativeButton("dismiss") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("save") { dialog, which ->
+                val enteredText = editText.text.toString() // Get text here
+                sharedViewModel.editProject(it, enteredText)
+                Toast.makeText(this.requireActivity(), "project edited", Toast.LENGTH_SHORT).show()
+            }
+            .show()
     }
 
 }
