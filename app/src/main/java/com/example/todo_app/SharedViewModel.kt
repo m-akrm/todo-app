@@ -30,19 +30,26 @@ class SharedViewModel:ViewModel() {
 
     }
 
-    fun addTask(task: Task) {
+    fun addTask(task: Task):Boolean {
         // Add the task to the tasks list
-        var list: MutableList<Task> =tasks.value?.toMutableList()?: mutableListOf()
-        list.add(task)
-        tasks.value=list
+        if(tasks.value?.find {
+            it.taskName==task.taskName
+        }==null) return false
 
-        // Add the task to the project's tasks list
         projects.value?.find { it.projectName ==  task.projectName }?.let {
             it.progressPercentage*=it.taskscount
             it.progressPercentage+=task.progressPercentage
             it.taskscount++
             it.progressPercentage/=(it.taskscount)
-        }
+        }?: return false
+
+        val list: MutableList<Task> =tasks.value?.toMutableList()?: mutableListOf()
+        list.add(task)
+        tasks.value=list
+
+        // Add the task to the project's tasks list
+
+        return true
     }
     fun addProject(project: Project) {
         // Add the project to the projects list
