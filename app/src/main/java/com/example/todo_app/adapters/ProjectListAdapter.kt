@@ -29,12 +29,6 @@ class ProjectListAdapter : ListAdapter<Project, ProjectListAdapter.ProjectViewHo
     inner class ProjectViewHolder(private val binding:GroupsLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(project: Project) {
 
-            if (project.icon == null) {
-                binding.iconImageView.setImageResource(R.drawable.office_icon)
-            } else {
-                binding.iconImageView.setImageDrawable(project.icon)
-            }
-
             binding.project=project
             binding.taskcount.text= buildString {
                 append(project.taskscount.toString())

@@ -22,26 +22,50 @@
             android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:id="@+id/editcardview"
+                android:layout_width="wrap_content"
 
-                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
                 android:backgroundTint="@color/even_cardview_icon_backgorund"
                 app:cardCornerRadius="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintBottom_toTopOf="@+id/deletecardview"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/iconImageView"
-                    android:layout_margin="8dp"
+                    android:id="@+id/editiconImageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_margin="8dp"
                     app:tint="@color/even_cardview_icon_color"
 
-                    tools:srcCompat="@drawable/office_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/deletecardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/odd_cardview_icon_backgorund"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editcardview">
+
+                <ImageView
+                    android:id="@+id/deleteiconImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    app:tint="@color/red"
+
+                    app:srcCompat="@drawable/delete" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -50,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
 
-                app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+                app:layout_constraintBottom_toBottomOf="@+id/deletecardview"
 
                 app:layout_constraintStart_toStartOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/textView12"
@@ -62,32 +86,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp"
-                tools:text="office project"
                 android:text="@{project.projectName}"
-
-
                 android:textColor="@color/black"
+
+
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/taskcount"
-                app:layout_constraintStart_toEndOf="@+id/cardView2"
-                app:layout_constraintTop_toTopOf="@+id/cardView2" />
+                app:layout_constraintStart_toEndOf="@+id/deletecardview"
+                app:layout_constraintTop_toTopOf="@+id/editcardview"
+                tools:text="office project" />
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/circularProgressIndicator"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:progress="@{project.progressPercentage}"
                 android:layout_marginEnd="32dp"
                 android:indeterminate="false"
-                tools:progress="85"
+                android:progress="@{project.progressPercentage}"
                 app:indicatorColor="@color/even_cardview_icon_color"
                 app:indicatorDirectionCircular="counterclockwise"
                 app:layout_constraintBottom_toBottomOf="@+id/taskcount"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
-
                 app:layout_constraintTop_toTopOf="@+id/textView12"
-                app:trackColor="@color/even_cardview_icon_backgorund" />
+
+                app:trackColor="@color/even_cardview_icon_backgorund"
+                tools:progress="85" />
 
             <TextView
                 android:id="@+id/progressTextview"

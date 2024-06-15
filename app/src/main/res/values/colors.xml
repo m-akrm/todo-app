@@ -14,5 +14,6 @@
     <color name="even_cardview_icon_backgorund">#FFE4F2</color>
     <color name="even_cardview_icon_color">#F378B7</color>
     <color name="calender_icon_color">#AA93FD</color>
+    <color name="red">#D11A2A</color>
 
 </resources>

@@ -75,6 +75,7 @@
                 app:trackThickness="8dp" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/delete_cardview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -84,10 +85,29 @@
                 app:layout_constraintTop_toTopOf="@+id/textView9">
 
                 <ImageView
-                    android:id="@+id/iconImageView"
+                    android:id="@+id/delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:srcCompat="@drawable/office_icon"
+                    app:srcCompat="@drawable/delete"
+
+                    app:tint="@color/red" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/edit_cardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="4dp"
+                android:backgroundTint="@color/even_cardview_icon_backgorund"
+                app:layout_constraintEnd_toStartOf="@id/delete_cardview"
+                app:layout_constraintTop_toTopOf="@+id/textView9">
+
+                <ImageView
+                    android:id="@+id/edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/edit_icon"
 
                     app:tint="@color/even_cardview_icon_color" />
             </androidx.cardview.widget.CardView>

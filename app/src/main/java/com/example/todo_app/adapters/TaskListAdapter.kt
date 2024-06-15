@@ -50,14 +50,6 @@ class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, Recycl
 
         fun bind(task: Task) {
             binding.task=task
-            var icon=viewModel.projects.value?.find {
-                it.projectName==task.projectName
-            }?.icon
-            if (icon == null) {
-                binding.iconImageView.setImageResource(R.drawable.office_icon)
-            } else {
-                binding.iconImageView.setImageDrawable(icon)
-            }
         }
     }
 
@@ -65,14 +57,7 @@ class TaskListAdapter(val viewModel: SharedViewModel) : ListAdapter<Task, Recycl
 
         fun bind(task: Task) {
             binding.task=task
-            var icon=viewModel.projects.value?.find {
-                it.projectName==task.projectName
-            }?.icon
-            if (icon == null) {
-                binding.iconImageView.setImageResource(R.drawable.office_icon)
-            } else {
-                binding.iconImageView.setImageDrawable(icon)
-            }
+
         }
     }
 }

@@ -49,7 +49,7 @@ class AddProjectFragment : Fragment() {
                 return@setOnClickListener
             }
             sharedViewModel.addProject(Project( projectname,0,0))
-            sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-do",0,duetime,description))
+            sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))
 
         }
 
