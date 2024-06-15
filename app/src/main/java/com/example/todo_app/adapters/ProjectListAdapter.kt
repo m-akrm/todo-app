@@ -9,7 +9,7 @@ import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.R
 import com.example.todo_app.databinding.GroupsLayoutBinding
 
-class ProjectListAdapter : ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
+class ProjectListAdapter( private val oneditClicked: (Project) -> Unit, private val ondeleteClicked: (Project) -> Unit) : ListAdapter<Project, ProjectListAdapter.ProjectViewHolder>(
     ProjectDiffCallback()
 ) {
 
@@ -30,6 +30,12 @@ class ProjectListAdapter : ListAdapter<Project, ProjectListAdapter.ProjectViewHo
         fun bind(project: Project) {
 
             binding.project=project
+            binding.editcardview.setOnClickListener {
+                oneditClicked(project)
+            }
+            binding.deletecardview.setOnClickListener {
+                ondeleteClicked(project)
+            }
             binding.taskcount.text= buildString {
                 append(project.taskscount.toString())
                 append("Tasks")

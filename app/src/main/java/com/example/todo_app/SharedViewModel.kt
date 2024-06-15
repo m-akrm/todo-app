@@ -42,7 +42,6 @@ class SharedViewModel:ViewModel() {
             it.progressPercentage+=task.progressPercentage
             it.taskscount++
             it.progressPercentage/=(it.taskscount)
-
         }
     }
     fun addProject(project: Project) {
@@ -61,5 +60,26 @@ class SharedViewModel:ViewModel() {
         return temp_projects.toList()
     }
 
+    fun editProject(project: Project, enteredText: String) {
+        val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
+        templist.find { it.projectName == project.projectName }?.projectName=enteredText
+        projects.value=templist
+    }
+
+    fun deleteProject(project: Project) {
+        //deleting project itself
+        val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
+        templist.remove(project)
+        projects.value=templist
+
+        //deleting tasks associated with the project
+        for (task in tasksByProject[project.projectName].orEmpty()) deleteTask(task)
+
+    }
+    fun deleteTask(task: Task) {
+        val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
+        temp_tasks.remove(task)
+        tasks.value = temp_tasks
+    }
 
 }

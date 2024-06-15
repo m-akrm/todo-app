@@ -15,6 +15,7 @@ import com.example.todo_app.R
 import com.example.todo_app.SharedViewModel
 import com.example.todo_app.adapters.CalenderListAdapter
 import com.example.todo_app.databinding.FragmentCalenderBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -45,8 +46,10 @@ class CalenderFragment : Fragment() {
         val calenderListAdapter= CalenderListAdapter()
         calenderListAdapter.submitList(sharedViewModel.tasks.value)
         binding.recyclerview.adapter=calenderListAdapter
-        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility=
-            View.VISIBLE
+        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).let {
+            it.visibility=View.VISIBLE
+            it.findViewById<FloatingActionButton>(R.id.fab).visibility=View.VISIBLE
+        }
 
 
         return binding.root

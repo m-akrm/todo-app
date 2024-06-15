@@ -11,12 +11,14 @@ import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.example.todo_app.R
 import com.example.todo_app.SharedViewModel
 import com.example.todo_app.databinding.FragmentAddProjectBinding
 import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
@@ -28,12 +30,17 @@ class AddProjectFragment : Fragment() {
 
     private lateinit var binding: FragmentAddProjectBinding
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding=DataBindingUtil.inflate(layoutInflater,R.layout.fragment_add_project,container,false)
-        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).visibility= View.VISIBLE
+        this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).let {
+            it.visibility=View.VISIBLE
+            it.findViewById<FloatingActionButton>(R.id.fab).visibility=View.GONE
+        }
 
         //handling editText listeners and date Pickers
         editTextListeners()
@@ -97,7 +104,6 @@ class AddProjectFragment : Fragment() {
                 val imm = this.requireActivity()
                     .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(v.windowToken, 0)
-
                 MaterialTimePicker.Builder()
                     .setInputMode(INPUT_MODE_CLOCK)
                     .setTimeFormat(TimeFormat.CLOCK_24H)

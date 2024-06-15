@@ -9,7 +9,11 @@
         android:id="@+id/mainFragment"
         android:name="com.example.todo_app.fragments.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+    </fragment>
     <fragment
         android:id="@+id/calenderFragment"
         android:name="com.example.todo_app.fragments.CalenderFragment"
@@ -24,10 +28,22 @@
         android:id="@+id/addTaskFragment"
         android:name="com.example.todo_app.fragments.AddTaskFragment"
         android:label="fragment_add_project"
-        tools:layout="@layout/fragment_add_task" />
+        tools:layout="@layout/fragment_add_task" >
+        <argument
+            android:name="task"
+            app:argType="com.example.todo_app.dataclasses.Task"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
         android:name="com.example.todo_app.fragments.AddProjectFragment"
         tools:layout="@layout/fragment_add_project"
-        android:label="AddProjectFragment" />
+        android:label="AddProjectFragment" >
+        <argument
+            android:name="project"
+            app:argType="com.example.todo_app.dataclasses.Project"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
