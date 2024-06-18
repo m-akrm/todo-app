@@ -11,6 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.todo_app.R
 import com.example.todo_app.SharedViewModel
 import com.example.todo_app.adapters.CalenderListAdapter
@@ -39,17 +40,28 @@ class CalenderFragment : Fragment() {
         binding=
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_calender, container, false)
         binding.lifecycleOwner=viewLifecycleOwner
-
-        init_calenderview()
-        buttonsClickListeners()
-
-        val calenderListAdapter= CalenderListAdapter()
-        calenderListAdapter.submitList(sharedViewModel.tasks.value)
-        binding.recyclerview.adapter=calenderListAdapter
         this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).let {
             it.visibility=View.VISIBLE
             it.findViewById<FloatingActionButton>(R.id.fab).visibility=View.VISIBLE
         }
+
+        init_calenderview()
+        buttonsClickListeners()
+
+        val calenderListAdapter= CalenderListAdapter(
+            ondeleteClicked = {
+                sharedViewModel.deleteTask(it)
+                Toast.makeText(this.requireContext(), "delete", Toast.LENGTH_SHORT).show()
+            },
+            oneditClicked = {
+                 this.findNavController().navigate(CalenderFragmentDirections.actionCalenderFragmentToAddTaskFragment().setTask(it))
+            }
+        )
+        sharedViewModel.tasks.observe(viewLifecycleOwner){
+            calenderListAdapter.submitList(it)
+        }
+        binding.recyclerview.adapter=calenderListAdapter
+
 
 
         return binding.root

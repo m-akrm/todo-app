@@ -79,13 +79,32 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/deleteicon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    app:tint="@color/red"
+
+                    app:srcCompat="@drawable/delete" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/editcardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/odd_cardview_icon_backgorund"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintEnd_toStartOf="@id/deletecardview"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
                     android:id="@+id/editiconImageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
-                    app:tint="@color/even_cardview_icon_color"
-
-                    app:srcCompat="@drawable/office_icon" />
+                    app:tint="@color/odd_cardview_icon_color"
+                    app:srcCompat="@drawable/edit_icon" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
