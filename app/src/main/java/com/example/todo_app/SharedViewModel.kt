@@ -1,11 +1,18 @@
 package com.example.todo_app
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.todo_app.dao.AppDatabase
+import com.example.todo_app.dao.ProjectDatabase
 import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
+import kotlinx.coroutines.launch
 
-class SharedViewModel:ViewModel() {
+class SharedViewModel(private  val application: Application) : AndroidViewModel(application) {
+    private lateinit var projectDatabase:ProjectDatabase
 
     val tasks = MutableLiveData(listOf(
         Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50,"10:00"),
@@ -15,6 +22,8 @@ class SharedViewModel:ViewModel() {
     val projects=MutableLiveData<List<Project>>()
     private  var tasksByProject = tasks.value?.groupBy { it.projectName }?: mapOf()
     fun init(){
+        val projectDao = AppDatabase.getDatabase(application).projectDao()
+        projectDatabase=ProjectDatabase(projectDao)
         intializeProjects()
     }
 
@@ -117,5 +126,20 @@ class SharedViewModel:ViewModel() {
         tasks.value = temp_tasks
 
     }
+
+    fun insertProjectDatabase(project: Project) = viewModelScope.launch {
+        projectDatabase.insert(project)
+    }
+    fun deleteProjectDatabase(project: Project) = viewModelScope.launch {
+        projectDatabase.delete(project)
+    }
+    fun updateProjectDatabase(project: Project) = viewModelScope.launch {
+        projectDatabase.update(project)
+    }
+    fun getProjectsDatabase() = viewModelScope.launch {
+        projectDatabase.getAllProjects()
+    }
+
+
 
 }
