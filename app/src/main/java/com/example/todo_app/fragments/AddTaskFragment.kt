@@ -53,7 +53,8 @@ class AddTaskFragment : Fragment() {
                 }
 
             }
-        }else{
+        }
+        else{
             val task = args.task!!
             binding.projectName.editText?.setText(task.projectName)
             binding.taskName.editText?.setText(task.taskName)

@@ -97,6 +97,8 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
                 projectDatabase.insert(project)
             }
         }
+        // Add the project to the tasksByProject map
+        tasksByProject[project.projectName] = emptyList()
 
     }
     fun getprojectsname(): List<String> {
