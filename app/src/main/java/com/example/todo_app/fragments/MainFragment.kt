@@ -63,6 +63,7 @@ class MainFragment : Fragment() {
             Log.i("test","project observer")
             projectListAdapter.submitList(it)
             binding.groupsRecyclerview.adapter=projectListAdapter
+            binding.projectsCounter.text=it.size.toString()
 
         }
 
@@ -70,6 +71,7 @@ class MainFragment : Fragment() {
             Log.i("test","task observer")
             adapter.submitList(it)
             binding.progressRecyclerview.adapter = adapter
+            binding.tasksCounter.text=it.size.toString()
         }
 
 
