@@ -24,6 +24,7 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
+import java.text.SimpleDateFormat
 
 
 class AddProjectFragment : Fragment() {
@@ -50,12 +51,13 @@ class AddProjectFragment : Fragment() {
             val projectname=binding.projectName.editText?.text.toString()
             val taskname=binding.taskName.editText?.text.toString()
             val duetime=binding.duetime.editText?.text.toString()
-            val startdate=binding.startDate.editText?.text.toString()
-            val enddate=binding.endDate.editText?.text.toString()
+            val startdateedittext= binding.startDate.editText?.text.toString()
+            val enddateedittext= binding.endDate.editText?.text.toString()
             val description=binding.projectDescription.editText?.text.toString()
-
+            val startdate= SimpleDateFormat("yyyy-MM-dd").parse(startdateedittext)
+            val enddate= SimpleDateFormat("yyyy-MM-dd").parse(enddateedittext)
             //check empty data
-            if(projectname.isEmpty() || duetime.isEmpty() || startdate.isEmpty() || enddate.isEmpty() || taskname.isEmpty()){
+            if(projectname.isEmpty() || duetime.isEmpty() || startdateedittext.isEmpty() || enddateedittext.isEmpty() || taskname.isEmpty()){
                 Toast.makeText(this.requireContext(), "some information is missing", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

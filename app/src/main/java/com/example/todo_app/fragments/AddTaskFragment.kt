@@ -20,12 +20,15 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.text.SimpleDateFormat
+import kotlin.time.Duration.Companion.days
 
 class AddTaskFragment : Fragment() {
 
     private lateinit var binding: FragmentAddTaskBinding
     private val sharedViewModel: SharedViewModel by activityViewModels()
     val args:AddTaskFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,10 +41,12 @@ class AddTaskFragment : Fragment() {
                 val projectname=binding.projectName.editText?.text.toString()
                 val taskname=binding.taskName.editText?.text.toString()
                 val duetime=binding.duetime.editText?.text.toString()
-                val startdate=binding.startDate.editText?.text.toString()
-                val enddate=binding.endDate.editText?.text.toString()
+                val startdateedittext= binding.startDate.editText?.text.toString()
+                val enddateedittext= binding.endDate.editText?.text.toString()
                 val description=binding.projectDescription.editText?.text.toString()
-                if(projectname.isEmpty() || duetime.isEmpty() || startdate.isEmpty() || enddate.isEmpty() ||  taskname.isEmpty()){
+                val startdate= SimpleDateFormat("yyyy-MM-dd").parse(startdateedittext)
+                val enddate= SimpleDateFormat("yyyy-MM-dd").parse(enddateedittext)
+                if(projectname.isEmpty() || duetime.isEmpty() || startdateedittext.isEmpty() || enddateedittext.isEmpty() ||  taskname.isEmpty()){
                     Toast.makeText(this.requireContext(), "some information is missing", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -59,18 +64,21 @@ class AddTaskFragment : Fragment() {
             binding.projectName.editText?.setText(task.projectName)
             binding.taskName.editText?.setText(task.taskName)
             binding.duetime.editText?.setText(task.dueTime)
-            binding.startDate.editText?.setText(task.startDate)
-            binding.endDate.editText?.setText(task.endDate)
+            binding.startDate.editText?.setText(sharedViewModel.convertLongToTime(task.startDate.time))
+            binding.endDate.editText?.setText(sharedViewModel.convertLongToTime(task.endDate.time))
             binding.projectDescription.editText?.setText(task.description)
 
             binding.addTaskButton.setOnClickListener {
                 val projectname=binding.projectName.editText?.text.toString()
                 val taskname=binding.taskName.editText?.text.toString()
                 val duetime=binding.duetime.editText?.text.toString()
-                val startdate=binding.startDate.editText?.text.toString()
-                val enddate=binding.endDate.editText?.text.toString()
+                val startdateedittext= binding.startDate.editText?.text.toString()
+                val enddateedittext= binding.endDate.editText?.text.toString()
                 val description=binding.projectDescription.editText?.text.toString()
-                if(projectname.isEmpty() || duetime.isEmpty() || startdate.isEmpty() || enddate.isEmpty()  || taskname.isEmpty()){
+
+                val startdate= SimpleDateFormat("yyyy-MM-dd").parse(startdateedittext)
+                val enddate= SimpleDateFormat("yyyy-MM-dd").parse(enddateedittext)
+                if(projectname.isEmpty() || duetime.isEmpty() || startdateedittext.isEmpty() || enddateedittext.isEmpty()  || taskname.isEmpty()){
                     Toast.makeText(this.requireContext(), "some information is missing", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -110,7 +118,7 @@ class AddTaskFragment : Fragment() {
                         .build()
                 datePicker.show(this.requireActivity().supportFragmentManager, "datePicker")
                 datePicker.addOnPositiveButtonClickListener {
-                    binding.startDate.editText?.setText(datePicker.headerText)
+                    binding.startDate.editText?.setText(sharedViewModel.convertLongToTime(it))
                 }
                 binding.startDate.editText?.clearFocus()
             }
@@ -127,7 +135,7 @@ class AddTaskFragment : Fragment() {
                         .build()
                 datePicker.show(this.requireActivity().supportFragmentManager, "datePicker")
                 datePicker.addOnPositiveButtonClickListener {
-                    binding.endDate.editText?.setText(datePicker.headerText)
+                    binding.endDate.editText?.setText(sharedViewModel.convertLongToTime(it))
                 }
                 binding.endDate.editText?.clearFocus()
             }

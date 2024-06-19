@@ -5,17 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.todo_app.dataclasses.Converters
 import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 
 @Database(entities = [Task::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class TaskAppDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
@@ -33,10 +37,16 @@ abstract class TaskAppDatabase : RoomDatabase() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             INSTANCE?.let { database ->
+
+                                val calender = Calendar.getInstance()
+                                val startdate=calender.time
+                                calender.add(Calendar.DAY_OF_MONTH,5)
+                                val enddate=calender.time
+
                                 val tasks = listOf(
-                                    Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50,"10:00"),
-                                    Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100,"10:00"),
-                                    Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0,"10:00")
+                                    Task("Task 1", "Project A", startdate,enddate, "In Progress", 50,"10:00"),
+                                    Task("Task 2", "Project B", startdate,enddate, "Completed", 100,"10:00"),
+                                    Task("Task 3", "Project C", startdate,enddate, "To Do", 0,"10:00")
                                 )
                                 for (task in tasks){
                                     CoroutineScope(Dispatchers.IO).launch {

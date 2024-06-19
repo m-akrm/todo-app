@@ -17,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class SharedViewModel(private  val application: Application) : AndroidViewModel(application) {
     private lateinit var projectDatabase: ProjectDao
@@ -252,5 +254,12 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
             tasksByProject[task.projectName]=templist
         }
     }
+
+    fun convertLongToTime(time: Long): String {
+        val date = Date(time)
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(date)
+    }
+
 
 }
