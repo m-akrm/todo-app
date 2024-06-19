@@ -2,6 +2,7 @@ package com.example.todo_app.fragments
 
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class MainFragment : Fragment() {
         // adjusting recyclerview adapters
         val adapter = TaskListAdapter(
             ondeleteClicked = {
+
                 sharedViewModel.deleteTask(it)
                 Toast.makeText(this.requireContext(), "delete", Toast.LENGTH_SHORT).show()
             },
@@ -58,12 +60,14 @@ class MainFragment : Fragment() {
             }
         )
         sharedViewModel.projects.observe(viewLifecycleOwner){
+            Log.i("test","project observer")
             projectListAdapter.submitList(it)
             binding.groupsRecyclerview.adapter=projectListAdapter
 
         }
 
         sharedViewModel.tasks.observe(viewLifecycleOwner){
+            Log.i("test","task observer")
             adapter.submitList(it)
             binding.progressRecyclerview.adapter = adapter
         }

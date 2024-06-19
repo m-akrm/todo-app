@@ -1,55 +1,70 @@
 package com.example.todo_app
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
 import com.example.todo_app.dao.AppDatabase
-import com.example.todo_app.dao.ProjectDatabase
+import com.example.todo_app.dao.ProjectDao
+import com.example.todo_app.dao.TaskAppDatabase
+import com.example.todo_app.dao.TaskDao
+
 import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SharedViewModel(private  val application: Application) : AndroidViewModel(application) {
-    private lateinit var projectDatabase:ProjectDatabase
+    private lateinit var projectDatabase: ProjectDao
+    private lateinit var taskDatabase:TaskDao
 
-    val tasks = MutableLiveData(listOf(
-        Task("Task 1", "Project A", "2023-04-01", "2023-04-15", "In Progress", 50,"10:00"),
-        Task("Task 2", "Project B", "2023-04-16", "2023-04-30", "Completed", 100,"10:00"),
-        Task("Task 3", "Project C", "2023-05-01", "2023-05-15", "To Do", 0,"10:00")
-    ))
+    val tasks = MutableLiveData(listOf<Task>())
     val projects=MutableLiveData<List<Project>>()
-    private  var tasksByProject = tasks.value?.groupBy { it.projectName }?: mapOf()
+    private  lateinit var tasksByProject:MutableMap<String,List<Task>>
     fun init(){
-        val projectDao = AppDatabase.getDatabase(application).projectDao()
-        projectDatabase=ProjectDatabase(projectDao)
-        intializeProjects()
-    }
+        // Initialize the databases
+        projectDatabase = AppDatabase.getDatabase(application).projectDao()
+        taskDatabase=TaskAppDatabase.getDatabase(application).taskDao()
 
-    private fun intializeProjects() {
-        val temp_projects = mutableListOf<Project>()
-        for ((project, tasks) in tasksByProject) temp_projects += Project(
-            project,
-            taskscount = tasks.size,
-            tasks.sumOf {
-                it.progressPercentage
-            } / tasks.size)
-        projects.value = temp_projects
+        //recive data from database
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val project=async { projectDatabase.getAllProjects() }
+                projects.postValue(project.await())
 
+            }
+        }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                val task=async { taskDatabase.getAllTasks() }
+                tasks.postValue(task.await())
+                tasksByProject= task.await().groupBy { it.projectName }?.toMutableMap()?: mutableMapOf()
+
+            }
+        }
     }
 
     fun addTask(task: Task):Boolean {
+        // Check if the task already exists
+        if (isTaskExist(task)) return false
         // Add the task to the tasks list
-        if(tasks.value?.find {
-            it.taskName==task.taskName
-        }==null) return false
-
         projects.value?.find { it.projectName ==  task.projectName }?.let {
             it.progressPercentage*=it.taskscount
             it.progressPercentage+=task.progressPercentage
             it.taskscount++
             it.progressPercentage/=(it.taskscount)
+
+            //update task and project database
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                    projectDatabase.update(it)
+                    taskDatabase.insert(task)
+                }
+            }
         }?: return false
 
         val list: MutableList<Task> =tasks.value?.toMutableList()?: mutableListOf()
@@ -57,61 +72,126 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
         tasks.value=list
 
         // Add the task to the project's tasks list
+        tasksByProject[task.projectName]?.let {
+            var templist=it.toMutableList()
+            templist.add(task)
+            tasksByProject[task.projectName]=templist
+        }
 
         return true
     }
+
+     fun isTaskExist(task: Task): Boolean {
+         return tasks.value?.find {
+             it.taskName == task.taskName
+         } != null
+     }
+
     fun addProject(project: Project) {
         // Add the project to the projects list
         var list: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
         list.add(project)
         projects.value=list
-    }
-    fun getprojectsname(): List<String> {
-        val temp_projects = mutableListOf<String>()
-        projects.value?.let {
-            for (project in it) {
-                temp_projects.add(project.projectName)
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                projectDatabase.insert(project)
             }
         }
-        return temp_projects.toList()
+
+    }
+    fun getprojectsname(): List<String> {
+        return tasksByProject.keys.toList()
     }
 
     fun editProject(project: Project, enteredText: String) {
         val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
-        templist.find { it.projectName == project.projectName }?.projectName=enteredText
+        templist.find { it.projectName == project.projectName }?.let {
+            it.projectName=enteredText
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                    projectDatabase.update(it)
+                }
+            }
+        }
         projects.value=templist
     }
 
     fun deleteProject(project: Project) {
         //deleting tasks associated with the project
-        for (task in tasksByProject[project.projectName].orEmpty()) deleteTask(task)
 
+        for (task in tasksByProject[project.projectName].orEmpty()) {
+            Log.i("test","deleting task")
+            deleteTask(task)
+        }
+
+
+    }
+    private fun _deleteProject(project: Project){
         //deleting project itself
         val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
         templist.remove(project)
         projects.value=templist
 
-
-
+        //delete project from project database
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                projectDatabase.delete(project)
+            }
+        }
+        // Remove the project from the tasksByProject map
+        tasksByProject.remove(project.projectName)
     }
     fun deleteTask(task: Task) {
         //deleting task from project's tasks list
+        Log.i("test","enterd the delete task function")
         val templist: MutableList<Project> =projects.value ?.toMutableList()?: mutableListOf()
+
+        Log.i("test","updating project")
         templist.find { it.projectName==task.projectName }?.let {
             it.progressPercentage*=it.taskscount
             it.progressPercentage-=task.progressPercentage
             it.taskscount--
-            it.progressPercentage=if(it.taskscount==0) 0 else it.progressPercentage/it.taskscount
+
+            if (it.taskscount == 0) {
+                _deleteProject(it)
+            }
+            else{
+                it.progressPercentage= it.progressPercentage/it.taskscount
+                Log.i("test","projects postvalue")
+                projects.postValue(templist)
+
+                //update project database
+                viewModelScope.launch {
+                    withContext(Dispatchers.IO){
+                        projectDatabase.update(it)
+                    }
+                }
+            }
+
         }
-        projects.value=templist
 
 
+
+        Log.i("test","tasks postvalue")
         //deleting task itself
         val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
         temp_tasks.remove(task)
-        tasks.value = temp_tasks
-    }
+        tasks.postValue(temp_tasks)
 
+        //delete task from task database
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                taskDatabase.delete(task)
+            }
+        }
+        // Remove the task from the tasksByProject map
+        tasksByProject[task.projectName]?.let {
+            val templist=it.toMutableList()
+            templist.remove(task)
+            tasksByProject[task.projectName]=templist
+        }
+
+    }
     fun editTask(oldtask: Task, task: Task) {
         val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
         temp_tasks.find{
@@ -124,22 +204,51 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
             it.status=task.status
         }
         tasks.value = temp_tasks
+        //update task database
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                taskDatabase.update(task)
+            }
+        }
+        //update project
+        val temp_project=projects.value?.toMutableList()?: mutableListOf()
+        temp_project.find { it.projectName==oldtask.projectName }?.let {
+            it.progressPercentage*=it.taskscount
+            it.progressPercentage-=oldtask.progressPercentage
+            it.taskscount--
+            it.progressPercentage=if(it.taskscount==0) 0 else it.progressPercentage/it.taskscount
+            //update project database
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    projectDatabase.update(it)
+                }
+            }
+        }
+        temp_project.find { it.projectName==task.projectName }?.let {
+            it.progressPercentage*=it.taskscount
+            it.progressPercentage+=task.progressPercentage
+            it.taskscount++
+            it.progressPercentage/=(it.taskscount)
 
-    }
+            //update project database
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                    projectDatabase.update(it)
+                }
+            }
+        }
+        projects.value=temp_project
 
-    fun insertProjectDatabase(project: Project) = viewModelScope.launch {
-        projectDatabase.insert(project)
+        tasksByProject[oldtask.projectName]?.let {
+            val templist=it.toMutableList()
+            templist.remove(oldtask)
+            tasksByProject[oldtask.projectName]=templist
+        }
+        tasksByProject[task.projectName]?.let {
+            val templist=it.toMutableList()
+            templist.add(task)
+            tasksByProject[task.projectName]=templist
+        }
     }
-    fun deleteProjectDatabase(project: Project) = viewModelScope.launch {
-        projectDatabase.delete(project)
-    }
-    fun updateProjectDatabase(project: Project) = viewModelScope.launch {
-        projectDatabase.update(project)
-    }
-    fun getProjectsDatabase() = viewModelScope.launch {
-        projectDatabase.getAllProjects()
-    }
-
-
 
 }

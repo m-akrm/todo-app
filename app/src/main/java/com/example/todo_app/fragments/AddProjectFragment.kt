@@ -45,22 +45,31 @@ class AddProjectFragment : Fragment() {
         //handling editText listeners and date Pickers
         editTextListeners()
         binding.addProjectButton.setOnClickListener {
+
+            //recieve data from views
             val projectname=binding.projectName.editText?.text.toString()
             val taskname=binding.taskName.editText?.text.toString()
             val duetime=binding.duetime.editText?.text.toString()
             val startdate=binding.startDate.editText?.text.toString()
             val enddate=binding.endDate.editText?.text.toString()
             val description=binding.projectDescription.editText?.text.toString()
-            if(projectname.isEmpty() || duetime.isEmpty() || startdate.isEmpty() || enddate.isEmpty() || description.isEmpty() || taskname.isEmpty()){
+
+            //check empty data
+            if(projectname.isEmpty() || duetime.isEmpty() || startdate.isEmpty() || enddate.isEmpty() || taskname.isEmpty()){
                 Toast.makeText(this.requireContext(), "some information is missing", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if(sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))){
-                sharedViewModel.addProject(Project( projectname,0,0))
-                Toast.makeText(this.requireActivity(), "project added successfully", Toast.LENGTH_SHORT).show()
+
+
+
+            if(sharedViewModel.isTaskExist(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))){
+                Toast.makeText(this.requireActivity(), "task already exists", Toast.LENGTH_SHORT).show()
             }
             else{
-                Toast.makeText(this.requireActivity(), "task already exists", Toast.LENGTH_SHORT).show()
+                sharedViewModel.addProject(Project( projectname,0,0))
+                sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))
+                Toast.makeText(this.requireActivity(), "project added successfully", Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
         }
