@@ -20,6 +20,8 @@ import com.example.todo_app.adapters.TaskListAdapter
 import com.example.todo_app.databinding.FragmentMainBinding
 import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.LabelFormatter
@@ -44,7 +46,7 @@ class MainFragment : Fragment() {
         }
 
         binding.button.setOnClickListener {
-            this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToCalenderFragment())
+            this.requireActivity().findViewById<CoordinatorLayout>(R.id.coordinator).findViewById<BottomAppBar>(R.id.bottom_app_bar).findViewById<BottomNavigationView>(R.id.bottom_nav).selectedItemId=R.id.calenderFragment
         }
 
         // adjusting recyclerview adapters

@@ -50,9 +50,15 @@ class AddTaskFragment : Fragment() {
                     Toast.makeText(this.requireContext(), "some information is missing", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-                if(sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))){
-                    Toast.makeText(this.requireActivity(), "task added successfully", Toast.LENGTH_SHORT).show()
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                if(!sharedViewModel.isTaskExist(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))){
+                    if(sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))){
+                        Toast.makeText(this.requireActivity(), "task added successfully", Toast.LENGTH_SHORT).show()
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                    else{
+                        Toast.makeText(this.requireActivity(), "project not fount", Toast.LENGTH_SHORT).show()
+                    }
+
                 }else{
                     Toast.makeText(this.requireActivity(), "a task with same name exists", Toast.LENGTH_SHORT).show()
                 }

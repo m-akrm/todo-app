@@ -12,16 +12,16 @@
         android:enabled="true"
         android:icon="@drawable/cal_icon"
         android:title="calender" />
-    <item
-        android:id="@+id/settingFragment"
-        android:enabled="true"
-        android:icon="@drawable/person_icon"
-        android:title="setting" />
+
     <item
         android:id="@+id/addProjectFragment"
         android:title="project"
         android:enabled="true"
         android:icon="@drawable/office_icon"
+        />
+    <item
+        android:title=""
+        android:enabled="false"
         />
 
 

@@ -165,8 +165,6 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
             }
             else{
                 it.progressPercentage= it.progressPercentage/it.taskscount
-                Log.i("test","projects postvalue")
-                projects.postValue(templist)
 
                 //update project database
                 viewModelScope.launch {
@@ -180,11 +178,13 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
 
 
 
+
+
         Log.i("test","tasks postvalue")
         //deleting task itself
         val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
         temp_tasks.remove(task)
-        tasks.postValue(temp_tasks)
+        tasks.value=temp_tasks
 
         //delete task from task database
         viewModelScope.launch {
@@ -194,6 +194,9 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
         }
         // Remove the task from the tasksByProject map
         tasksByProject[task.projectName]?.let {
+
+            projects.value=templist
+
             val templist=it.toMutableList()
             templist.remove(task)
             tasksByProject[task.projectName]=templist
