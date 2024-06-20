@@ -19,13 +19,18 @@ import com.example.todo_app.adapters.ProjectListAdapter
 import com.example.todo_app.adapters.TaskListAdapter
 import com.example.todo_app.databinding.FragmentMainBinding
 import com.example.todo_app.dataclasses.Project
+import com.example.todo_app.dataclasses.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.slider.LabelFormatter
+import com.google.android.material.slider.Slider
+import java.util.Calendar
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    val calender=Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +43,10 @@ class MainFragment : Fragment() {
             it.findViewById<FloatingActionButton>(R.id.fab).visibility=View.VISIBLE
         }
 
+        binding.button.setOnClickListener {
+            this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToCalenderFragment())
+        }
+
         // adjusting recyclerview adapters
         val adapter = TaskListAdapter(
             ondeleteClicked = {
@@ -47,6 +56,9 @@ class MainFragment : Fragment() {
             },
             oneditClicked = {
                 this.findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddTaskFragment().setTask(it))
+            },
+            onProgressChange = {
+                progressChange(it)
             }
         )
 
@@ -72,6 +84,26 @@ class MainFragment : Fragment() {
             adapter.submitList(it)
             binding.progressRecyclerview.adapter = adapter
             binding.tasksCounter.text=it.size.toString()
+            sharedViewModel.changeCurrentTask(calender.time)
+        }
+        sharedViewModel.currenttasks.observe(viewLifecycleOwner){
+            Log.i("tested",it.toString())
+            binding.textView3.text="You completed your\ntasks today"
+            if(it.isNotEmpty()){
+                var progress=0
+                for(task in it){
+                    progress+=task.progressPercentage
+                }
+                progress/=it.size
+                binding.circularProgressIndicator.progress=progress
+                binding.textView4.text=progress.toString()+"%"
+                if (progress!=100)
+                    binding.textView3.text="Your today's task \nalmost done"
+            }
+            else{
+                binding.circularProgressIndicator.progress=100
+                binding.textView4.text=100.toString()+"%"
+            }
         }
 
 
@@ -101,6 +133,36 @@ class MainFragment : Fragment() {
                 val enteredText = editText.text.toString() // Get text here
                 sharedViewModel.editProject(it, enteredText)
                 Toast.makeText(this.requireActivity(), "project edited", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+    }
+    private fun progressChange(it: Task) {
+        val slider = Slider(this.requireContext()).apply {
+            value = it.progressPercentage.toFloat()
+            valueFrom = 0f
+            valueTo = 100f
+            stepSize = 5f
+            labelBehavior = LabelFormatter.LABEL_VISIBLE
+            setLabelFormatter {
+                it.toInt().toString()+"%"
+            }
+        }
+
+        MaterialAlertDialogBuilder(this.requireContext())
+            .setView(slider)
+            .setTitle("change task progress")
+
+
+            .setNegativeButton("dismiss") { dialog, which ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("save") { dialog, which ->
+                val newtask = it
+                newtask.progressPercentage = slider.value.toInt()
+                if(newtask.progressPercentage==100) newtask.status="Completed"
+                else if(newtask.progressPercentage==0) newtask.status="To Do"
+                else newtask.status="In Progress"
+                sharedViewModel.editTask(it, newtask)
             }
             .show()
     }

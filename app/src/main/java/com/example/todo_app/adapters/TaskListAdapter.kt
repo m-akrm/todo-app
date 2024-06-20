@@ -13,7 +13,7 @@ import com.example.todo_app.databinding.OddProgressLayoutBinding
 import com.example.todo_app.dataclasses.Project
 
 
-class TaskListAdapter(private val oneditClicked: (Task) -> Unit, private val ondeleteClicked: (Task) -> Unit) : ListAdapter<Task, RecyclerView.ViewHolder>(
+class TaskListAdapter(private val oneditClicked: (Task) -> Unit, private val ondeleteClicked: (Task) -> Unit,private val onProgressChange: (Task) -> Unit) : ListAdapter<Task, RecyclerView.ViewHolder>(
     TaskDiffCallback()
 ) {
 
@@ -57,6 +57,9 @@ class TaskListAdapter(private val oneditClicked: (Task) -> Unit, private val ond
             binding.deleteCardview.setOnClickListener {
                 ondeleteClicked(task)
             }
+            binding.parentCardView.setOnClickListener {
+                onProgressChange(task)
+            }
         }
     }
 
@@ -69,6 +72,9 @@ class TaskListAdapter(private val oneditClicked: (Task) -> Unit, private val ond
             }
             binding.deleteCardview.setOnClickListener {
                 ondeleteClicked(task)
+            }
+            binding.parentCardView.setOnClickListener {
+                onProgressChange(task)
             }
         }
     }

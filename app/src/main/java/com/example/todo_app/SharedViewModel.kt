@@ -18,6 +18,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 class SharedViewModel(private  val application: Application) : AndroidViewModel(application) {
@@ -26,6 +27,9 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
 
     val tasks = MutableLiveData(listOf<Task>())
     val projects=MutableLiveData<List<Project>>()
+    val currenttasks = MutableLiveData(listOf<Task>())
+    private val calendar=Calendar.getInstance()
+
     private  lateinit var tasksByProject:MutableMap<String,List<Task>>
     fun init(){
         // Initialize the databases
@@ -195,6 +199,8 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
             tasksByProject[task.projectName]=templist
         }
 
+
+
     }
     fun editTask(oldtask: Task, task: Task) {
         val temp_tasks = tasks.value?.toMutableList() ?: mutableListOf()
@@ -259,6 +265,16 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
         val date = Date(time)
         val format = SimpleDateFormat("yyyy-MM-dd")
         return format.format(date)
+    }
+    fun changeCurrentTask(date: Date){
+
+        val list: MutableList<Task> =tasks.value?.toMutableList()?: mutableListOf()
+        list.filter {
+            convertLongToTime(it.endDate.time)==convertLongToTime(date.time)
+        }.let {
+            currenttasks.value=it
+        }
+
     }
 
 

@@ -16,12 +16,17 @@ import com.example.todo_app.R
 import com.example.todo_app.SharedViewModel
 import com.example.todo_app.adapters.CalenderListAdapter
 import com.example.todo_app.databinding.FragmentCalenderBinding
+import com.example.todo_app.dataclasses.Task
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.slider.LabelFormatter
+import com.google.android.material.slider.Slider
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
+import java.text.NumberFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -46,74 +51,64 @@ class CalenderFragment : Fragment() {
         }
 
         init_calenderview()
-        buttonsClickListeners()
+
 
         val calenderListAdapter= CalenderListAdapter(
             ondeleteClicked = {
                 sharedViewModel.deleteTask(it)
+                sharedViewModel.changeCurrentTask(it.endDate)
                 Toast.makeText(this.requireContext(), "delete", Toast.LENGTH_SHORT).show()
             },
             oneditClicked = {
                  this.findNavController().navigate(CalenderFragmentDirections.actionCalenderFragmentToAddTaskFragment().setTask(it))
+            },
+            onProgressChange = {
+                progressChange(it)
             }
         )
-        sharedViewModel.tasks.observe(viewLifecycleOwner){
+        sharedViewModel.currenttasks.observe(viewLifecycleOwner){
             calenderListAdapter.submitList(it)
+            binding.recyclerview.adapter=calenderListAdapter
         }
-        binding.recyclerview.adapter=calenderListAdapter
+
 
 
 
         return binding.root
     }
 
-    private fun buttonsClickListeners() {
-        val buttons = listOf(binding.all, binding.todo, binding.progress, binding.completed)
-        binding.all.setOnClickListener {
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
-            }
-            active = 0
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.fab_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
+    private fun progressChange(it: Task) {
+        val slider = Slider(this.requireContext()).apply {
+            value = it.progressPercentage.toFloat()
+            valueFrom = 0f
+            valueTo = 100f
+            stepSize = 5f
+            labelBehavior = LabelFormatter.LABEL_VISIBLE
+            setLabelFormatter {
+                it.toInt().toString()+"%"
             }
         }
-        binding.todo.setOnClickListener {
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
+
+        MaterialAlertDialogBuilder(this.requireContext())
+            .setView(slider)
+            .setTitle("change task progress")
+
+
+            .setNegativeButton("dismiss") { dialog, which ->
+                dialog.dismiss()
             }
-            active = 1
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.fab_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
+            .setPositiveButton("save") { dialog, which ->
+                val newtask = it
+                newtask.progressPercentage = slider.value.toInt()
+                if(newtask.progressPercentage==100) newtask.status="Completed"
+                else if(newtask.progressPercentage==0) newtask.status="To Do"
+                else newtask.status="In Progress"
+                sharedViewModel.editTask(it, newtask)
+                sharedViewModel.changeCurrentTask(it.endDate)
             }
-        }
-        binding.completed.setOnClickListener {
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
-            }
-            active = 3
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.fab_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
-            }
-        }
-        binding.progress.setOnClickListener {
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.bottom_bar_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.fab_color)))
-            }
-            active = 2
-            buttons[active].apply {
-                setBackgroundColor(resources.getColor(R.color.fab_color))
-                setTextColor(ColorStateList.valueOf(resources.getColor(R.color.white)))
-            }
-        }
+            .show()
     }
+
 
     private fun init_calenderview() {
         // set current date to calendar and current month to currentMonth variable
@@ -162,11 +157,7 @@ class CalenderFragment : Fragment() {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
                 // TODO: change recyclerview list with new date
                 if (isSelected) {
-                    Toast.makeText(
-                        this@CalenderFragment.requireContext(),
-                        "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} ",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    sharedViewModel.changeCurrentTask(date)
 
                 }
                 super.whenSelectionChanged(isSelected, position, date)

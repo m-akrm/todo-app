@@ -15,7 +15,7 @@ import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
 
 
-class CalenderListAdapter(private val oneditClicked: (Task) -> Unit, private val ondeleteClicked: (Task) -> Unit)  : ListAdapter<Task, CalenderListAdapter.CalenderViewHolder>(
+class CalenderListAdapter(private val oneditClicked: (Task) -> Unit, private val ondeleteClicked: (Task) -> Unit,private val onProgressChange: (Task) -> Unit)  : ListAdapter<Task, CalenderListAdapter.CalenderViewHolder>(
     CalenderDiffCallback()
 ) {
 
@@ -40,6 +40,9 @@ class CalenderListAdapter(private val oneditClicked: (Task) -> Unit, private val
             }
             binding.deletecardview.setOnClickListener{
                 ondeleteClicked(task)
+            }
+            binding.parentCardView.setOnClickListener{
+                onProgressChange(task)
             }
         }
     }
