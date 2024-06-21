@@ -1,7 +1,6 @@
 package com.example.todo_app.fragments
 
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -80,7 +79,6 @@ class MainFragment : Fragment() {
             binding.projectsCounter.text=it.size.toString()
 
         }
-
         sharedViewModel.tasks.observe(viewLifecycleOwner){
             Log.i("test","task observer")
             adapter.submitList(it)
@@ -112,6 +110,7 @@ class MainFragment : Fragment() {
 
 
 
+
         //setting counters
         binding.tasksCounter.text=sharedViewModel.tasks.value?.size.toString()
         binding.projectsCounter.text=sharedViewModel.projects.value?.size.toString()
@@ -138,9 +137,9 @@ class MainFragment : Fragment() {
             }
             .show()
     }
-    private fun progressChange(it: Task) {
+    private fun progressChange(task: Task) {
         val slider = Slider(this.requireContext()).apply {
-            value = it.progressPercentage.toFloat()
+            value = task.progressPercentage.toFloat()
             valueFrom = 0f
             valueTo = 100f
             stepSize = 5f
@@ -159,12 +158,12 @@ class MainFragment : Fragment() {
                 dialog.dismiss()
             }
             .setPositiveButton("save") { dialog, which ->
-                val newtask = it
+                val newtask = task.copy()
                 newtask.progressPercentage = slider.value.toInt()
                 if(newtask.progressPercentage==100) newtask.status="Completed"
                 else if(newtask.progressPercentage==0) newtask.status="To Do"
                 else newtask.status="In Progress"
-                sharedViewModel.editTask(it, newtask)
+                sharedViewModel.editTask(task, newtask)
             }
             .show()
     }

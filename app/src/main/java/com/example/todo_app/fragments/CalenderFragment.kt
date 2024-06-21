@@ -155,7 +155,7 @@ class CalenderFragment : Fragment() {
         val myCalendarChangesObserver = object :
             CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-                // TODO: change recyclerview list with new date
+
                 if (isSelected) {
                     sharedViewModel.changeCurrentTask(date)
 

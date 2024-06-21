@@ -1,5 +1,6 @@
 package com.example.todo_app.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -21,6 +22,6 @@ interface TaskDao {
     suspend fun delete(task: Task)
 
     @Query("SELECT * FROM Task")
-    suspend fun getAllTasks(): List<Task>
+    fun getAllTasks(): LiveData<List<Task>>
 
 }

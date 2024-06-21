@@ -2,6 +2,7 @@ package com.example.todo_app.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.navArgs
 import com.example.todo_app.R
 import com.example.todo_app.SharedViewModel
 import com.example.todo_app.databinding.FragmentAddProjectBinding
@@ -19,10 +19,8 @@ import com.example.todo_app.dataclasses.Project
 import com.example.todo_app.dataclasses.Task
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK
-import com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_KEYBOARD
 import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 
@@ -68,10 +66,13 @@ class AddProjectFragment : Fragment() {
                 Toast.makeText(this.requireActivity(), "task already exists", Toast.LENGTH_SHORT).show()
             }
             else{
-                sharedViewModel.addProject(Project( projectname,0,0))
-                sharedViewModel.addTask(Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))
+                sharedViewModel.addProject(Project( projectname,0,0),Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))
+
+
                 Toast.makeText(this.requireActivity(), "project added successfully", Toast.LENGTH_SHORT).show()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
+
+
             }
 
         }
@@ -93,7 +94,7 @@ class AddProjectFragment : Fragment() {
                         .build()
                 datePicker.show(this.requireActivity().supportFragmentManager, "datePicker")
                 datePicker.addOnPositiveButtonClickListener {
-                    binding.startDate.editText?.setText(datePicker.headerText)
+                    binding.startDate.editText?.setText(sharedViewModel.convertLongToTime(it))
                 }
                 binding.startDate.editText?.clearFocus()
             }
@@ -110,7 +111,7 @@ class AddProjectFragment : Fragment() {
                         .build()
                 datePicker.show(this.requireActivity().supportFragmentManager, "datePicker")
                 datePicker.addOnPositiveButtonClickListener {
-                    binding.endDate.editText?.setText(datePicker.headerText)
+                    binding.endDate.editText?.setText(sharedViewModel.convertLongToTime(it))
                 }
                 binding.endDate.editText?.clearFocus()
             }

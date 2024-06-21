@@ -89,7 +89,7 @@ class AddTaskFragment : Fragment() {
                     return@setOnClickListener
                 }
 
-                sharedViewModel.editTask(task,Task( taskname,projectname,startdate,enddate,"To-Do",0,duetime,description))
+                sharedViewModel.editTask(task,Task( taskname,projectname,startdate,enddate, task.status,task.progressPercentage,duetime,description,task.id))
 
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
