@@ -179,17 +179,35 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
             }
         }
         //update project
-        projects.value?.find { it.projectName==oldtask.projectName }?.let {
-            Log.i("edit task",it.toString())
-            it.progressPercentage*=it.taskscount
-            it.progressPercentage-=oldtask.progressPercentage
-            it.taskscount--
+        if(oldtask.projectName!=task.projectName){
+            projects.value?.find { it.projectName==oldtask.projectName }?.let {
+                Log.i("edit task",it.toString())
+                it.progressPercentage*=it.taskscount
+                it.progressPercentage-=oldtask.progressPercentage
+                it.taskscount--
 
-            if (it.taskscount == 0) {
-                _deleteProject(it)
+                if (it.taskscount == 0) {
+                    _deleteProject(it)
+                }
+                else{
+                    it.progressPercentage= it.progressPercentage/it.taskscount
+
+                    //update project database
+                    viewModelScope.launch {
+                        withContext(Dispatchers.IO){
+                            projectDatabase.update(it)
+                        }
+                    }
+                }
+
             }
-            else{
-                it.progressPercentage= it.progressPercentage/it.taskscount
+            projects.value?.find { it.projectName==task.projectName }?.let {
+                it.progressPercentage*=it.taskscount
+                Log.i("edit task","found new project")
+                it.progressPercentage+=task.progressPercentage
+                Log.i("edit task","new progress is $it.progressPercentage")
+                it.taskscount++
+                it.progressPercentage/=(it.taskscount)
 
                 //update project database
                 viewModelScope.launch {
@@ -198,25 +216,21 @@ class SharedViewModel(private  val application: Application) : AndroidViewModel(
                     }
                 }
             }
-
         }
-        projects.value?.find { it.projectName==task.projectName }?.let {
-            it.progressPercentage*=it.taskscount
-            Log.i("edit task","found new project")
-            it.progressPercentage+=task.progressPercentage
-            Log.i("edit task","new progress is $it.progressPercentage")
-            it.taskscount++
-            it.progressPercentage/=(it.taskscount)
-
-            //update project database
-            viewModelScope.launch {
-                withContext(Dispatchers.IO){
-                    projectDatabase.update(it)
+        else{
+            projects.value?.find { it.projectName==task.projectName }?.let {
+                it.progressPercentage*=it.taskscount
+                it.progressPercentage-=oldtask.progressPercentage
+                it.progressPercentage+=task.progressPercentage
+                it.progressPercentage/=(it.taskscount)
+                //update project database
+                viewModelScope.launch {
+                    withContext(Dispatchers.IO) {
+                        projectDatabase.update(it)
+                    }
                 }
             }
         }
-
-
     }
 
     fun convertLongToTime(time: Long): String {

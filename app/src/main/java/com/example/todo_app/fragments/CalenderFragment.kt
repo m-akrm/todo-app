@@ -35,7 +35,7 @@ class CalenderFragment : Fragment() {
     private lateinit var binding: FragmentCalenderBinding
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
-    private var active=0
+    private lateinit var currentdate: Date
     private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +72,9 @@ class CalenderFragment : Fragment() {
         }
 
 
-
+        sharedViewModel.tasks.observe(viewLifecycleOwner){
+            sharedViewModel.changeCurrentTask(date = currentdate)
+        }
 
         return binding.root
     }
@@ -155,7 +157,7 @@ class CalenderFragment : Fragment() {
         val myCalendarChangesObserver = object :
             CalendarChangesObserver {
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-
+                currentdate=date
                 if (isSelected) {
                     sharedViewModel.changeCurrentTask(date)
 
