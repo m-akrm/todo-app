@@ -1,6 +1,11 @@
 # To-Do App
 This is a simple To-Do application built using Kotlin, Jetpack libraries, MVVM architecture, and Room database. for codsoft internship
 
+![32967e53-efc7-48c0-b065-ced0aa08d794](https://github.com/m-akrm/todo-app/assets/113924991/6295412b-a144-4430-90fb-4d534c309d82)
+![efa6356c-924e-45e4-9b10-fc6b19b3fe0c](https://github.com/m-akrm/todo-app/assets/113924991/7449060c-f1dd-4e09-ac38-824d084423df)
+![2e78b841-e68b-4b01-94ff-6c3e1e798a6c](https://github.com/m-akrm/todo-app/assets/113924991/7b0c2763-a4e1-4933-8a90-a2cde4abcd1b)
+
+
 ## Features
 - **Task Management**: Add, edit, and delete tasks.
 - **Calendar Integration**: Schedule tasks with a single-row calendar view.
